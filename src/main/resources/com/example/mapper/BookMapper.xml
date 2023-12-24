@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!--namespace的值必须是BookMapper.java的接口全路径-->
+<mapper namespace="com.example.mapper.BookMapper">
+
+<!--因为book表的列名和Book实体的属性名不一致，所以myBatis将列的值封装到实体的哪个属性。所以此时需要自定义结果集映射，
+也就是手动建立列名和实体的属性名的一一对应关系-->
+
+    <resultMap id="bookMap" type="com.example.domain.Book">
+        <id column="book_id" property="id"/>
+        <result column="book_name" property="name"/>
+        <result column="book_isbn" property="isbn"/>
+        <result column="book_press" property="press"/>
+        <result column="book_author" property="author"/>
+        <result column="book_pagination" property="pagination"/>
+        <result column="book_price" property="price"/>
+        <result column="book_uploadtime" property="uploadTime"/>
+        <result column="book_status" property="status"/>
+        <result column="book_borrower" property="borrower"/>
+        <result column="book_borrowtime" property="borrowTime"/>
+        <result column="book_returntime" property="returnTime"/>
+    </resultMap>
+
+    <select id="list" resultMap="bookMap">
+        select * from book where 1=1
+<!--采用动态sql技术，用户输入了数据便加入sql语句，未输入数据便不加入-->
+        <if test="name != null and name.trim()!=''">
+<!--            模糊查询搜索书名-->
+            and book_name like concat('%',#{name},'%')
+        </if>
+        <if test="author != null and author.trim()!=''">
+            and book_author = #{author}
+        </if>
+        <if test="press != null and press.trim()!=''">
+            and book_press = #{press}
+        </if>
+    </select>
+
+    <select id="findNewBook" resultMap="bookMap">
+<!--    order by 表示排序，后面跟上排序的列, asc(ascend)/desc(descend)表示排序的规则，分别代表升序和降序
+    limit start,size start代表从起始位置开始查询，size表示查询的数量-->
+        select * from book order by book_uploadtime desc limit 0,5
+    </select>
+
+    <select id="findById" resultMap="bookMap">
+        select * from book where book_id = #{id}
+    </select>
+
+    <update id="update">
+        update book
+        set
+            book_name = #{book.name},
+            book_isbn = #{book.isbn},
+            book_press = #{book.press},
+            book_author = #{book.author},
+            book_pagination = #{book.pagination},
+            book_price = #{book.price},
+            book_status = #{book.status}
+        where
+            book_id = #{book.id}
+    </update>
+</mapper>

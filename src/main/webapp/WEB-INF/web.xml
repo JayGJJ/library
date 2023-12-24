@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+         version="4.0">
+  <!--
+  运行应用失败，主要日志如下：
+  java.lang.IllegalArgumentException: More than one fragment with the name [spring_web] was found.
+  https://blog.csdn.net/weixin_47356044/article/details/120469316-->
+<!--  <absolute-ordering/>-->
+</web-app>
